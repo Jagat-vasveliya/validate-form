@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import Display from "../Display";
 import "./index.css";
 
 export default function Form() {
@@ -7,6 +8,7 @@ export default function Form() {
 		lastName: "",
 		age: "",
 		address: "",
+		profile: "",
 	});
 	const [FisrtNameError, setFisrstNameError] = useState(false);
 	const [FisrtNameError1, setFisrstNameError1] = useState(false);
@@ -14,19 +16,21 @@ export default function Form() {
 	const [LastNameError1, setLastNameError1] = useState(false);
 	const [ageError, setAgeError] = useState(false);
 	const [addressError, setAddressError] = useState(false);
-	//const [profile, setProfile] = useState("");
+	const [show, setShow] = useState(true);
 	const fileData = useRef();
 
 	const setValue = (event) => {
 		const { name, value } = event.target;
-		setData((prevState) => ({ ...prevState, [name]: value }));
+		event.target.type === "file"
+			? setData((prevState) => ({ ...prevState, profile: fileData.current.files[0] }))
+			: setData((prevState) => ({ ...prevState, [name]: value }));
 		validateData(name, value);
 	};
 	const validateData = (name, value) => {
 		let check;
 		switch (name) {
 			case "firstName":
-				check = /^[A-Za-z]+$/.test(value);
+				check = /^[A-Za-z ]+$/.test(value);
 				setFisrstNameError1(
 					value.length < 21
 						? ""
@@ -70,11 +74,10 @@ export default function Form() {
 		}
 	};
 	const sendData = (event) => {
-		console.log(data);
-		console.log(fileData.current.value);
+		setShow(!show);
 		event.preventDefault();
 	};
-	return (
+	return show ? (
 		<div className="container">
 			<form className="main-form" onSubmit={sendData}>
 				<div className="form-control">
@@ -132,6 +135,7 @@ export default function Form() {
 						name="profile"
 						className="input-file"
 						ref={fileData}
+						onChange={setValue}
 					/>
 				</div>
 				<div className="form-control btn-block">
@@ -144,5 +148,7 @@ export default function Form() {
 				</div>
 			</form>
 		</div>
+	) : (
+		<Display data={data} />
 	);
 }
