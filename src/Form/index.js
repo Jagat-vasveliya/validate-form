@@ -17,6 +17,7 @@ export default function Form() {
 	const [ageError, setAgeError] = useState(true);
 	const [addressError, setAddressError] = useState(true);
 	const [show, setShow] = useState(true);
+	const [finalError, setfinalError] = useState();
 	const fileData = useRef();
 
 	const setValue = (event) => {
@@ -34,11 +35,11 @@ export default function Form() {
 				setFisrstNameError1(
 					value.length < 21
 						? false
-						: "*max 20 charcater are allowed"
+						: "*max 20 character are allowed"
 				);
 				check
 					? setFisrstNameError(false)
-					: setFisrstNameError("*Only Cheacters are allowd");
+					: setFisrstNameError("*Only Characters are allowed");
 				break;
 
 			case "lastName":
@@ -46,25 +47,25 @@ export default function Form() {
 				setLastNameError1(
 					value.length < 21
 						? false
-						: "*max 20 charcater are allowed"
+						: "*max 20 character are allowed"
 				);
 				check
 					? setLastNameError(false)
-					: setLastNameError("*Only Charchater are allowd");
+					: setLastNameError("*Only Character are allowed");
 				break;
 
 			case "age":
 				setAgeError(
 					value >= 10 && value < 101
 						? false
-						: "*Minimum 10 Year & Maximum 100 Years are allowd"
+						: "*Minimum 10 Year & Maximum 100 Years are allowed"
 				);
 				break;
 
 			case "address":
 				setAddressError(
 					value.length > 25
-						? "*Maximum 25 Charcaters are allowd"
+						? "*Maximum 25 characters are allowed"
 						: false
 				);
 				break;
@@ -74,16 +75,19 @@ export default function Form() {
 		}
 	};
 	const sendData = (event) => {
-		if(!FisrtNameError && !FisrtNameError1 && !LastNameError && !LastNameError1 && !ageError && !addressError){
+		if(!FisrtNameError && !FisrtNameError1 && !LastNameError && !LastNameError1 && !ageError && !addressError && data.profile != ''){
+			setfinalError('');
 			setShow(!show);
 			event.preventDefault();
 		}else{
+			setfinalError("*Please filed out all fields");
 			event.preventDefault();
 		}
 	};
 	return show ? (
 		<div className="container">
 			<form className="main-form" onSubmit={sendData}>
+				<p className="error">{finalError}</p>
 				<div className="form-control">
 					<label className="main-label">First Name</label>
 					<input
