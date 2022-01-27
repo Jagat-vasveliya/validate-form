@@ -10,12 +10,12 @@ export default function Form() {
 		address: "",
 		profile: "",
 	});
-	const [FisrtNameError, setFisrstNameError] = useState(false);
-	const [FisrtNameError1, setFisrstNameError1] = useState(false);
-	const [LastNameError, setLastNameError] = useState(false);
-	const [LastNameError1, setLastNameError1] = useState(false);
-	const [ageError, setAgeError] = useState(false);
-	const [addressError, setAddressError] = useState(false);
+	const [FisrtNameError, setFisrstNameError] = useState(true);
+	const [FisrtNameError1, setFisrstNameError1] = useState(true);
+	const [LastNameError, setLastNameError] = useState(true);
+	const [LastNameError1, setLastNameError1] = useState(true);
+	const [ageError, setAgeError] = useState(true);
+	const [addressError, setAddressError] = useState(true);
 	const [show, setShow] = useState(true);
 	const fileData = useRef();
 
@@ -33,11 +33,11 @@ export default function Form() {
 				check = /^[A-Za-z ]+$/.test(value);
 				setFisrstNameError1(
 					value.length < 21
-						? ""
+						? false
 						: "*max 20 charcater are allowed"
 				);
 				check
-					? setFisrstNameError("")
+					? setFisrstNameError(false)
 					: setFisrstNameError("*Only Cheacters are allowd");
 				break;
 
@@ -45,18 +45,18 @@ export default function Form() {
 				check = /^[a-zA-Z ]+$/.test(value);
 				setLastNameError1(
 					value.length < 21
-						? ""
+						? false
 						: "*max 20 charcater are allowed"
 				);
 				check
-					? setLastNameError("")
+					? setLastNameError(false)
 					: setLastNameError("*Only Charchater are allowd");
 				break;
 
 			case "age":
 				setAgeError(
 					value >= 10 && value < 101
-						? ""
+						? false
 						: "*Minimum 10 Year & Maximum 100 Years are allowd"
 				);
 				break;
@@ -65,7 +65,7 @@ export default function Form() {
 				setAddressError(
 					value.length > 25
 						? "*Maximum 25 Charcaters are allowd"
-						: ""
+						: false
 				);
 				break;
 
@@ -74,8 +74,12 @@ export default function Form() {
 		}
 	};
 	const sendData = (event) => {
-		setShow(!show);
-		event.preventDefault();
+		if(!FisrtNameError && !FisrtNameError1 && !LastNameError && !LastNameError1 && !ageError && !addressError){
+			setShow(!show);
+			event.preventDefault();
+		}else{
+			event.preventDefault();
+		}
 	};
 	return show ? (
 		<div className="container">
