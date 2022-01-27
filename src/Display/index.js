@@ -10,13 +10,11 @@ export default function Display(props) {
 					height="200px"
 					width="200px"
 				/>
-				<p className="address">{props.data.address}</p>
-			</div>
-			<div className="detail">
 				<h1>
 					{props.data.firstName} {props.data.lastName}
 				</h1>
 				<h2>{props.data.age} Year</h2>
+				<p className="address">{props.data.address}</p>
 			</div>
 		</div>
 	);
