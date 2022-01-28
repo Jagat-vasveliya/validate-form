@@ -10,13 +10,14 @@ export default function Form() {
 		address: "",
 		profile: "",
 	});
-	const [FisrtNameError, setFisrstNameError] = useState(false);
-	const [FisrtNameError1, setFisrstNameError1] = useState(false);
-	const [LastNameError, setLastNameError] = useState(false);
-	const [LastNameError1, setLastNameError1] = useState(false);
-	const [ageError, setAgeError] = useState(false);
-	const [addressError, setAddressError] = useState(false);
+	const [FisrtNameError, setFisrstNameError] = useState(true);
+	const [FisrtNameError1, setFisrstNameError1] = useState(true);
+	const [LastNameError, setLastNameError] = useState(true);
+	const [LastNameError1, setLastNameError1] = useState(true);
+	const [ageError, setAgeError] = useState(true);
+	const [addressError, setAddressError] = useState(true);
 	const [show, setShow] = useState(true);
+	const [finalError, setfinalError] = useState();
 	const fileData = useRef();
 
 	const setValue = (event) => {
@@ -33,39 +34,39 @@ export default function Form() {
 				check = /^[A-Za-z ]+$/.test(value);
 				setFisrstNameError1(
 					value.length < 21
-						? ""
-						: "*max 20 charcater are allowed"
+						? false
+						: "*max 20 character are allowed"
 				);
 				check
-					? setFisrstNameError("")
-					: setFisrstNameError("*Only Cheacters are allowd");
+					? setFisrstNameError(false)
+					: setFisrstNameError("*Only Characters are allowed");
 				break;
 
 			case "lastName":
 				check = /^[a-zA-Z ]+$/.test(value);
 				setLastNameError1(
 					value.length < 21
-						? ""
-						: "*max 20 charcater are allowed"
+						? false
+						: "*max 20 character are allowed"
 				);
 				check
-					? setLastNameError("")
-					: setLastNameError("*Only Charchater are allowd");
+					? setLastNameError(false)
+					: setLastNameError("*Only Character are allowed");
 				break;
 
 			case "age":
 				setAgeError(
 					value >= 10 && value < 101
-						? ""
-						: "*Minimum 10 Year & Maximum 100 Years are allowd"
+						? false
+						: "*Minimum 10 Year & Maximum 100 Years are allowed"
 				);
 				break;
 
 			case "address":
 				setAddressError(
 					value.length > 25
-						? "*Maximum 25 Charcaters are allowd"
-						: ""
+						? "*Maximum 25 characters are allowed"
+						: false
 				);
 				break;
 
@@ -74,12 +75,19 @@ export default function Form() {
 		}
 	};
 	const sendData = (event) => {
-		setShow(!show);
-		event.preventDefault();
+		if(!FisrtNameError && !FisrtNameError1 && !LastNameError && !LastNameError1 && !ageError && !addressError && data.profile != ''){
+			setfinalError('');
+			setShow(!show);
+			event.preventDefault();
+		}else{
+			setfinalError("*Please filed out all fields");
+			event.preventDefault();
+		}
 	};
 	return show ? (
 		<div className="container">
 			<form className="main-form" onSubmit={sendData}>
+				<p className="error">{finalError}</p>
 				<div className="form-control">
 					<label className="main-label">First Name</label>
 					<input
